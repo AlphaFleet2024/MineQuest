@@ -41,6 +41,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "client/event_manager.h"
 #include "fontengine.h"
 #include "gui/touchcontrols.h"
+#include "gui/touchscreeneditor.h"
 #include "itemdef.h"
 #include "log.h"
 #include "filesys.h"
@@ -157,6 +158,11 @@ struct LocalFormspecHandler : public TextDest
 
 			if (fields.find("btn_key_config") != fields.end()) {
 				g_gamecallback->keyConfig();
+				return;
+			}
+
+			if (fields.find("btn_touchscreen_layout") != fields.end()) {
+				g_gamecallback->touchscreenLayout();
 				return;
 			}
 
@@ -1869,6 +1875,12 @@ inline bool Game::handleCallbacks()
 		(new GUIKeyChangeMenu(guienv, guiroot, -1,
 				      &g_menumgr, texture_src))->drop();
 		g_gamecallback->keyconfig_requested = false;
+	}
+
+	if (g_gamecallback->touchscreenlayout_requested) {
+		(new GUITouchscreenLayout(guienv, guiroot, -1,
+				     &g_menumgr, texture_src))->drop();
+		g_gamecallback->touchscreenlayout_requested = false;
 	}
 
 	if (!g_gamecallback->show_open_url_dialog.empty()) {
@@ -4504,6 +4516,10 @@ void Game::showPauseMenu()
 	os		<< "button_exit[4," << (ypos++) << ";3,0.5;btn_key_config;"
 		<< strgettext("Controls")  << "]";
 #endif
+	if (g_touchcontrols) {
+		os << "button_exit[4," << (ypos++) << ";3,0.5;btn_touchscreen_layout;"
+			<< strgettext("Touchscreen Layout")  << "]";
+	}
 	os		<< "button_exit[4," << (ypos++) << ";3,0.5;btn_exit_menu;"
 		<< strgettext("Exit to Menu") << "]";
 	os		<< "button_exit[4," << (ypos++) << ";3,0.5;btn_exit_os;"
