@@ -57,6 +57,7 @@
 			old servers.
 		Rename TOCLIENT_DEATHSCREEN to TOCLIENT_DEATHSCREEN_LEGACY
 		Rename TOSERVER_RESPAWN to TOSERVER_RESPAWN_LEGACY
+		"[combine:WxH:x1,y1,w1=" 3rd parameter extension
 		[scheduled bump for 5.10.0]
 */
 
