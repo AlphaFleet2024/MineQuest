@@ -33,6 +33,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define PLAYERNAME_ALLOWED_CHARS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
 #define PLAYERNAME_ALLOWED_CHARS_USER_EXPL "'a' to 'z', 'A' to 'Z', '0' to '9', '-', '_'"
 
+enum HandIndex { MAINHAND = 0, OFFHAND = 1 };
+
 bool is_valid_player_name(std::string_view name);
 
 struct PlayerFovSpec
@@ -210,6 +212,14 @@ public:
 
 	// Returns non-empty `selected` ItemStack. `hand` is a fallback, if specified
 	ItemStack &getWieldedItem(ItemStack *selected, ItemStack *hand) const;
+
+	// item currently in secondary hand is returned in `offhand`
+	// item to use for place / secondary_use (either main or offhand) is (optionally) returned in `place`
+	// return value: whether to use main or offhand for placing
+	void getOffhandWieldedItem(ItemStack *offhand) const;
+
+	HandIndex getCurrentUsedHand(IItemDefManager *idef, const PointedThing &pointed) const;
+
 	void setWieldIndex(u16 index);
 	u16 getWieldIndex();
 
@@ -234,6 +244,8 @@ public:
 
 	u32 hud_flags;
 	s32 hud_hotbar_itemcount;
+
+	HandIndex current_used_hand { MAINHAND };
 
 	// Get actual usable number of hotbar items (clamped to size of "main" list)
 	u16 getMaxHotbarItemcount();
