@@ -60,6 +60,12 @@ private:
 	 */
 	static bool mayModifyPath(std::string path);
 
+	//lan discovery
+
+	static int l_ask_lan_servers(lua_State *L);
+
+	static int l_get_lan_servers(lua_State *L);
+
 	//api calls
 
 	static int l_start(lua_State *L);

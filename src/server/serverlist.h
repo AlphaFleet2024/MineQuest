@@ -21,6 +21,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content/mods.h"
 #include "json-forwards.h"
 #include <iostream>
+#include "network/lan.h"
 
 #pragma once
 
@@ -28,6 +29,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 namespace ServerList
 {
+	extern lan_adv lan_adv_client;
+	void lan_get();
+	bool lan_fresh();
+
 #if USE_CURL
 enum AnnounceAction {AA_START, AA_UPDATE, AA_DELETE};
 void sendAnnounce(AnnounceAction, u16 port,
