@@ -361,7 +361,7 @@ local function check_requirements(name, requires)
 		keyboard_mouse = not touch_support or (touch_controls == "auto" or not core.is_yes(touch_controls)),
 		shaders_support = shaders_support,
 		shaders = core.settings:get_bool("enable_shaders") and shaders_support,
-		opengl = video_driver == "opengl",
+		opengl = (video_driver == "opengl" or video_driver == "opengl3"),
 		gles = video_driver:sub(1, 5) == "ogles",
 	}
 
