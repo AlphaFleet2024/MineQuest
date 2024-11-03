@@ -26,7 +26,7 @@ Table of Contents
 Further documentation
 ----------------------
 - Website: https://www.minetest.net/
-- Wiki: https://wiki.minetest.net/
+- Wiki: https://wiki.luanti.org/
 - Forum: https://forum.minetest.net/
 - GitHub: https://github.com/minetest/minetest/
 - [Developer documentation](doc/developing/)
