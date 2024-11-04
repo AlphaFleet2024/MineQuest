@@ -45,8 +45,7 @@ public:
 	IMesh *getMesh(f32) override;
 
 	//! Animates this mesh's joints based on frame input
-	//! blend: {0-old position, 1-New position}
-	void animateMesh(f32 frame, f32 blend) override;
+	void animateMesh(f32 frame) override;
 
 	//! Preforms a software skin on this mesh based of joint positions
 	void skinMesh() override;
@@ -141,12 +140,12 @@ public:
 	//! Adds a new joint to the mesh, access it as last one
 	SJoint *addJoint(SJoint *parent = 0) override;
 
-	//! Adds a new position key to the mesh, access it as last one
-	SPositionKey *addPositionKey(SJoint *joint) override;
-	//! Adds a new rotation key to the mesh, access it as last one
-	SRotationKey *addRotationKey(SJoint *joint) override;
-	//! Adds a new scale key to the mesh, access it as last one
-	SScaleKey *addScaleKey(SJoint *joint) override;
+	//! Adds a new position key to the mesh
+	virtual void addPositionKey(SJoint *joint, f32 frame, core::vector3df pos) override;
+	//! Adds a new scale key to the mesh
+	virtual void addScaleKey(SJoint *joint, f32 frame, core::vector3df scale) override;
+	//! Adds a new rotation key to the mesh
+	virtual void addRotationKey(SJoint *joint, f32 frame, core::quaternion rotation) override;
 
 	//! Adds a new weight to the mesh, access it as last one
 	SWeight *addWeight(SJoint *joint) override;
@@ -158,9 +157,6 @@ public:
 
 	//! Tranfers the joint data to the mesh
 	void transferJointsToMesh(const core::array<IBoneSceneNode *> &jointChildSceneNodes);
-
-	//! Tranfers the joint hints to the mesh
-	void transferOnlyJointsHintsToMesh(const core::array<IBoneSceneNode *> &jointChildSceneNodes);
 
 	//! Creates an array of joints from this mesh as children of node
 	void addJoints(core::array<IBoneSceneNode *> &jointChildSceneNodes,
@@ -175,11 +171,6 @@ private:
 	void buildAllLocalAnimatedMatrices();
 
 	void buildAllGlobalAnimatedMatrices(SJoint *Joint = 0, SJoint *ParentJoint = 0);
-
-	void getFrameData(f32 frame, SJoint *Node,
-			core::vector3df &position, s32 &positionHint,
-			core::vector3df &scale, s32 &scaleHint,
-			core::quaternion &rotation, s32 &rotationHint);
 
 	void calculateGlobalMatrices(SJoint *Joint, SJoint *ParentJoint);
 
@@ -207,9 +198,6 @@ private:
 
 	f32 EndFrame;
 	f32 FramesPerSecond;
-
-	f32 LastAnimatedFrame;
-	bool SkinnedLastFrame;
 
 	E_INTERPOLATION_MODE InterpolationMode : 8;
 
