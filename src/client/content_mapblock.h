@@ -62,6 +62,12 @@ private:
 
 // options
 	const bool enable_mesh_cache;
+	const bool smooth_liquids = false;
+	// Liquid vertices do not wave if their y pos is exactly on (at most 0.001 above
+	// (in node length)) the node border. If you want them to wave anyways, add this
+	// offset (in node length).
+	// This is 0 if waving liquids are off, -0.002f otherwise.
+	const f32 liquid_y_offset_allow_wave;
 
 // current node
 	struct {
@@ -119,7 +125,6 @@ private:
 		f32 corner_levels[2][2];
 	};
 	LiquidData cur_liquid;
-	bool smooth_liquids = false;
 
 	void prepareLiquidNodeDrawing();
 	void getLiquidNeighborhood();
