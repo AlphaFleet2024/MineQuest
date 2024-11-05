@@ -705,10 +705,16 @@ std::string ShadowRenderer::readShaderFile(const std::string &path)
 ShadowRenderer *createShadowRenderer(IrrlichtDevice *device, Client *client)
 {
 	// disable if unsupported
-	if (g_settings->getBool("enable_dynamic_shadows") && (
-		device->getVideoDriver()->getDriverType() != video::EDT_OPENGL ||
-		!g_settings->getBool("enable_shaders"))) {
-		g_settings->setBool("enable_dynamic_shadows", false);
+	if (g_settings->getBool("enable_dynamic_shadows")) {
+		// See also checks in builtin/mainmenu/settings/dlg_settings.lua
+		const video::E_DRIVER_TYPE type = device->getVideoDriver()->getDriverType();
+		bool is_ok = g_settings->getBool("enable_shaders")
+			&& (type == video::EDT_OPENGL || type == video::EDT_OPENGL3);
+
+		if (!is_ok) {
+			warningstream << "Shadows: disabled dynamic shadows due to missing dependencies" << std::endl;
+			g_settings->setBool("enable_dynamic_shadows", false);
+		}
 	}
 
 	if (g_settings->getBool("enable_shaders") &&
